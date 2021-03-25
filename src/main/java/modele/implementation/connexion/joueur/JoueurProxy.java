@@ -9,14 +9,9 @@ public class JoueurProxy implements Serializable {
     private final String pseudo;
     private boolean enLigne;
 
-    public JoueurProxy(Joueur joueurReel) {
-        this.pseudo = joueurReel.getPseudo();
-        try {
-            GestionnaireSession.getInstance().getSessionFromPseudo(pseudo);
-            this.enLigne = true;
-        } catch (Exception e) {
-            this.enLigne = false;
-        }
+    public JoueurProxy(String pseudo, boolean enLigne) {
+        this.pseudo = pseudo;
+        this.enLigne = enLigne;
     }
 
     public String getPseudo() {

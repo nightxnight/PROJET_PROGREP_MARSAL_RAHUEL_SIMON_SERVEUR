@@ -48,6 +48,15 @@ public class GestionnaireSession {
         else return s;
     }
 
+    public boolean isSessionEnLigne(String pseudo) {
+        try {
+            getSessionFromPseudo(pseudo);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     public HashMap<String, Session> getMapSession() {
         return mapSession;
     }

@@ -2,6 +2,7 @@ package modele.implementation.salleattente.connecteur;
 
 import modele.client.stub.salleattente.ListenerSalleAttenteIF;
 import modele.gestionnaire.GestionnaireSalleAttente;
+import modele.implementation.salleattente.SalleAttente;
 import modele.serveur.stub.salleattente.SalleAttenteIF;
 import modele.serveur.stub.salleattente.SalleAttenteProprietaireIF;
 import modele.implementation.salleattente.SalleAttenteProxy;
@@ -42,7 +43,14 @@ public class ConnecteurSalleAttente extends UnicastRemoteObject implements Conne
     public ArrayList<SalleAttenteProxy> getListeSallesAttentes() throws RemoteException {
         ArrayList<SalleAttenteProxy> listeSallesAttentes = new ArrayList<SalleAttenteProxy>();
         for(String nomSalle : GestionnaireSalleAttente.getInstance().getMapSalleAttente().keySet()) {
-            listeSallesAttentes.add(new SalleAttenteProxy(GestionnaireSalleAttente.getInstance().getMapSalleAttente().get(nomSalle)));
+            SalleAttente salleReel = GestionnaireSalleAttente.getInstance().getMapSalleAttente().get(nomSalle);
+            listeSallesAttentes.add(new SalleAttenteProxy(
+                    salleReel.getNomSalle(),
+                    salleReel.getParametres().getJeu().getPremier().getNomJeu(),
+                    salleReel.getMapJoueurs().size(),
+                    salleReel.getParametres().getNombreJoueurSalle(),
+                    !salleReel.getParametres().getMotDePasse().equals(""),
+                    salleReel.getParametres().isPublique()));
         }
         return listeSallesAttentes.stream().filter(SalleAttenteProxy::isPublique).collect(Collectors.toCollection(ArrayList::new));
     }

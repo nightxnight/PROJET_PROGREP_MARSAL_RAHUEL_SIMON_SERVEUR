@@ -87,7 +87,7 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         else if (!peutRejoindre)
             throw new IllegalArgumentException("Cette salle est en pleine partie.");
 
-        JoueurProxy joueurEntrant = new JoueurProxy(GestionnaireSession.getInstance().getSessionFromPseudo(pseudoEntrant).getJoueur()); // renvoie une erreur qui interruptera la fonction si le joueur n'existe pas
+        JoueurProxy joueurEntrant = new JoueurProxy(pseudoEntrant, true); // renvoie une erreur qui interruptera la fonction si le joueur n'existe pas
 
         for(String pseudo : mapJoueurs.keySet()) {
             mapJoueurs.get(pseudo).getPremier().connexionJoueur(joueurEntrant);
@@ -135,7 +135,7 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
     public HashMap<JoueurProxy, Boolean> getListeJoueur() throws RemoteException {
         HashMap<JoueurProxy, Boolean> mapJoueursProxy = new HashMap<JoueurProxy, Boolean>();
         for(String pseudo : mapJoueurs.keySet()) {
-            JoueurProxy joueurProxy = new JoueurProxy(GestionnaireSession.getInstance().getSessionFromPseudo(pseudo).getJoueur());
+            JoueurProxy joueurProxy = new JoueurProxy(pseudo, true);
             mapJoueursProxy.put(joueurProxy, mapJoueurs.get(pseudo).getSecond());
         }
         return mapJoueursProxy;

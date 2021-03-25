@@ -1,7 +1,6 @@
 package modele.implementation.connexion.joueur;
 
 import modele.implementation.amis.chat.Message;
-import modele.gestionnaire.GestionnaireJoueur;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -72,7 +71,6 @@ public class Joueur implements Serializable {
         else if (demandeAmis.containsKey(joueur.getPseudo())) throw new IllegalArgumentException("Vous avez deja demande " + this.pseudo + " en amis.");
         else if(joueur.getDemandeAmis().containsKey(this.pseudo)) accepterDemandeAmis(joueur, true);
         demandeAmis.put(joueur.getPseudo(), joueur);
-        GestionnaireJoueur.getInstance().sauvegarderChangements();
     }
 
     public void accepterDemandeAmis(Joueur joueur, boolean accepte) {
@@ -85,7 +83,6 @@ public class Joueur implements Serializable {
         amis.put(joueur.getPseudo(), joueur);
         joueur.getAmis().put(this.pseudo, this);
         demandeAmis.remove(joueur.getPseudo());
-        GestionnaireJoueur.getInstance().sauvegarderChangements();
     }
 
     public void supprimerAmis(Joueur joueur) {
@@ -93,7 +90,6 @@ public class Joueur implements Serializable {
         else {
             this.amis.remove(joueur.getPseudo());
             joueur.getAmis().remove(this.pseudo);
-            GestionnaireJoueur.getInstance().sauvegarderChangements();
         }
     }
 
@@ -101,7 +97,6 @@ public class Joueur implements Serializable {
         if(!amis.containsKey(pseudoAvec)) throw new IllegalArgumentException("Ce joueur ne fait pas partie de vos amis.");
         else if (!conversations.containsKey(amis.get(pseudoAvec))) conversations.put(amis.get(pseudoAvec), new ArrayList<Message>());
         conversations.get(amis.get(pseudoAvec)).add(message);
-        GestionnaireJoueur.getInstance().sauvegarderChangements();
     }
 
     public HashMap<String, Joueur> getAmis() {

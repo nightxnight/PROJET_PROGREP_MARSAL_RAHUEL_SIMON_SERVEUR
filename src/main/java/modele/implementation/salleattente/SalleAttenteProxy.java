@@ -1,7 +1,6 @@
 package modele.implementation.salleattente;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 public class SalleAttenteProxy implements Serializable {
 
@@ -12,13 +11,14 @@ public class SalleAttenteProxy implements Serializable {
     private final boolean besoinMdp;
     private final boolean publique;
 
-    public SalleAttenteProxy(SalleAttente salleAttenteReel) throws RemoteException {
-       this.nomSalle = salleAttenteReel.getNomSalle();
-       this.nomJeu = salleAttenteReel.getParametres().getJeu().getPremier().getNomJeu();
-       this.nbJoueursConnecte = salleAttenteReel.getMapJoueurs().size();
-       this.nbJoueursMax = salleAttenteReel.getParametres().getNombreJoueurSalle();
-       this.besoinMdp = !salleAttenteReel.getParametres().getMotDePasse().equals("");
-       this.publique = salleAttenteReel.getParametres().isPublique();
+    public SalleAttenteProxy(String nomSalle, String nomJeu, int nbJoueurConnecte,
+                             int nbJoueursMax, boolean besoinMdp, boolean publique) {
+       this.nomSalle = nomSalle;
+       this.nomJeu = nomJeu;
+       this.nbJoueursConnecte = nbJoueurConnecte;
+       this.nbJoueursMax = nbJoueursMax;
+       this.besoinMdp = besoinMdp;
+       this.publique = publique;
     }
 
     public String getNomSalle() {
