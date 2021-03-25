@@ -58,7 +58,7 @@ public class PortailAmis extends UnicastRemoteObject implements PortailAmisIF {
     public void demandeAmis(String pseudo, String pseudoDemande) throws RemoteException, IllegalArgumentException {
         GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudoDemande).ajoutDemandeAmis(GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudo));
         if(mapJoueur.containsKey(pseudoDemande)) {
-            try { mapJoueur.get(pseudoDemande).recupererDemande(new JoueurProxy(pseudoDemande, true));} catch (RemoteException re) { /* ne rien faire */ }
+            try { mapJoueur.get(pseudoDemande).recupererDemande(new JoueurProxy(pseudo, true));} catch (RemoteException re) { /* ne rien faire */ }
         }
         GestionnaireJoueur.getInstance().sauvegarderChangements();
     }
@@ -67,9 +67,9 @@ public class PortailAmis extends UnicastRemoteObject implements PortailAmisIF {
     public void accepterDemande(String pseudo, String pseudoAccepte, boolean accepter) throws RemoteException, IllegalArgumentException {
         GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudo).accepterDemandeAmis(GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudoAccepte), accepter);
         if(!accepter) return;
-        try { mapJoueur.get(pseudo).recupererAmis(new JoueurProxy(pseudo, true)); } catch (RemoteException re) { /* ne rien faire */ }
+        try { mapJoueur.get(pseudo).recupererAmis(new JoueurProxy(pseudoAccepte, true)); } catch (RemoteException re) { /* ne rien faire */ }
         if(mapJoueur.containsKey(pseudoAccepte))
-            try { mapJoueur.get(pseudoAccepte).recupererAmis(new JoueurProxy(pseudoAccepte, true)); } catch (RemoteException re) { /* ne rien faire */ }
+            try { mapJoueur.get(pseudoAccepte).recupererAmis(new JoueurProxy(pseudo, true)); } catch (RemoteException re) { /* ne rien faire */ }
         GestionnaireJoueur.getInstance().sauvegarderChangements();
     }
 
