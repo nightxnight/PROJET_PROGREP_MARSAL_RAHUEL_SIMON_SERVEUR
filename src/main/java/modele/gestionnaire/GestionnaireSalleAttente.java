@@ -33,6 +33,7 @@ public class GestionnaireSalleAttente {
     }
 
     public SalleAttente rejoindreSalleAttente(String pseudo, ListenerSalleAttenteIF clientListener, String nomSalle, String motDePasse) throws RemoteException, IllegalArgumentException {
+        if (!mapSalleAttente.containsKey(nomSalle)) throw new IllegalArgumentException("Cette salle d'attente n'existe pas");
         return mapSalleAttente.get(nomSalle).entrer(pseudo, clientListener, motDePasse);
     }
 

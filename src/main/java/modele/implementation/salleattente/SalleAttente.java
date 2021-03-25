@@ -47,7 +47,7 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
     public void run() {
         while (reference) {
             try {
-                try  { autokick(); } catch (Exception e) { /* Ne peut pas arriver, appel interne du serveur */}
+                autokick();
                 if (joueursPret()) {
                     peutRejoindre = false;
                     if (decompteLancement()) {
@@ -68,7 +68,7 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
                     } else peutRejoindre = true;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                // ne rien faire
             }
         }
     }
