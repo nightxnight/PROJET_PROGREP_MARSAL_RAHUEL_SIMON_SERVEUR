@@ -13,9 +13,15 @@ public class Server {
     public static final int PORT = 6000;
 
     public static void main(String[] args) throws Exception {
+        /*
+         * Le serveur verifiera toutes les 30 secondes si un objet distant est reference
+         */
         System.setProperty("java.rmi.dgc.leaseValue", "30000");
-        LocateRegistry.createRegistry(PORT);
 
+        /*
+         * Initialisation de tous les services
+         */
+        LocateRegistry.createRegistry(PORT);
         GestionnaireSession.getInstance();
         GestionnaireJoueur.getInstance();
         PortailAmis.getInstance();

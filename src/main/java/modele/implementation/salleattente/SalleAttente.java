@@ -54,6 +54,10 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
                         while (true) {
                             if(!application.isReference()) {
                                 this.application = null;
+                                this.changerParametreSalle(this.proprietaire.getJoueur().getPseudo(),
+                                        "jeu",
+                                        this.getParametres().getJeu().getPremier().getNomJeu());
+                                this.designerProprietaire(proprietaire.getJoueur().getPseudo());
                                 peutRejoindre = true;
                                 autokick();
                                 for(String pseudo : mapJoueurs.keySet())
