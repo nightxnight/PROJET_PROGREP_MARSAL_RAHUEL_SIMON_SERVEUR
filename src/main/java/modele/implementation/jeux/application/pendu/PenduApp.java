@@ -4,7 +4,7 @@ import modele.client.stub.jeux.JeuxListenerIF;
 import modele.client.stub.jeux.pendu.PenduListenerIF;
 import modele.implementation.jeux.application.Application;
 import modele.serveur.stub.jeux.application.JeuxIF;
-import modele.implementation.jeux.application.ResultatPartieEnum;
+import modele.serveur.stub.jeux.application.ResultatPartieEnum;
 import modele.serveur.stub.jeux.application.pendu.PenduIF;
 import utils.ListeOrdonnee;
 import utils.Paire;

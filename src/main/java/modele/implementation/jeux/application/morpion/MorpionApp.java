@@ -4,7 +4,7 @@ import modele.client.stub.jeux.JeuxListenerIF;
 import modele.client.stub.jeux.morpion.MorpionListenerIF;
 import modele.implementation.jeux.application.Application;
 import modele.serveur.stub.jeux.application.JeuxIF;
-import modele.implementation.jeux.application.ResultatPartieEnum;
+import modele.serveur.stub.jeux.application.ResultatPartieEnum;
 import modele.serveur.stub.jeux.application.morpion.MorpionIF;
 import utils.ListeOrdonnee;
 import utils.Paire;
@@ -18,6 +18,8 @@ public class MorpionApp extends Application implements MorpionIF {
 
     private final MorpionParams parametres;
     private final char[] SYMBOLE = {'X', 'O'};
+    private int tour = 0;
+    private int maxTour;
     private char[][] tableau;
 
     public MorpionApp(MorpionParams parametres) throws RemoteException, IllegalArgumentException {
@@ -28,6 +30,7 @@ public class MorpionApp extends Application implements MorpionIF {
         for(int i = 0; i < this.parametres.getTailleTableau(); i++)
             for(int j = 0; j < this.parametres.getTailleTableau(); j++)
                 tableau[i][j] = '_';
+        this.maxTour = parametres.getTailleTableau() * parametres.getTailleTableau();
     }
 
     @Override
@@ -37,11 +40,21 @@ public class MorpionApp extends Application implements MorpionIF {
         }
         if(resultat == null) return;
 
+        if(resultat == ResultatPartieEnum.PERDU) {
+            for(Paire<String, MorpionListenerIF> pairePseudoListener : listeJoueurs.getListe())
+                try {
+                pairePseudoListener.getSecond().arreterJeu(ResultatPartieEnum.PERDU, "Personne n'a gagne, il n'y a plus de case libre.");
+                } catch (Exception e) {
+                    // Ne rien faire
+                }
+            return;
+        }
+
         for (Paire<String, MorpionListenerIF> pairePseudoListener : listeJoueurs.getListe()) {
             try {
                 String message = (resultat == ResultatPartieEnum.GAGNANT_PAR_FORFAIT) ? "vous avez gagne par forfait." : dernierePersonneJouee + " a gagne la partie!";
                 pairePseudoListener.getSecond().arreterJeu((dernierePersonneJouee.equals(pairePseudoListener.getPremier())) ? ResultatPartieEnum.GAGNE : ResultatPartieEnum.PERDU, message);
-            } catch (RemoteException re) {
+            } catch (Exception e) {
                 // should not occur.
             }
         }
@@ -93,16 +106,23 @@ public class MorpionApp extends Application implements MorpionIF {
         else if(tableau[ligne][colonne] != '_') throw new IllegalArgumentException("Cette case est deja occupe");
         else {
             this.dernierePersonneJouee = pseudo;
+            this.tour += 1;
 
             tableau[ligne][colonne] = symbole;
+
+            for (Paire<String, MorpionListenerIF> pairePseudoListener : listeJoueurs.getListe())
+                pairePseudoListener.getSecond().recupererCaseBloque(ligne, colonne, symbole);
 
             if(verifierTableau())  {
                 resultat = ResultatPartieEnum.GAGNE;
                 partieLancer = false;
             } else {
-                for(Paire<String, MorpionListenerIF> pairePseudoListener : listeJoueurs.getListe())
-                    pairePseudoListener.getSecond().recupererCaseBloque(ligne, colonne, symbole);
-                listeJoueurs.suivant().getSecond().faireJouer();
+                if(tour == maxTour) {
+                    resultat = ResultatPartieEnum.PERDU;
+                    partieLancer = false;
+                } else {
+                    listeJoueurs.suivant().getSecond().faireJouer();
+                }
             }
         }
     }

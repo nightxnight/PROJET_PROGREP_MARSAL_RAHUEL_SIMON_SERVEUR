@@ -1,6 +1,6 @@
 package modele.client.stub.jeux;
 
-import modele.implementation.jeux.application.ResultatPartieEnum;
+import modele.serveur.stub.jeux.application.ResultatPartieEnum;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

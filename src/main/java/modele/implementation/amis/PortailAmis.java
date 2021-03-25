@@ -56,6 +56,7 @@ public class PortailAmis extends UnicastRemoteObject implements PortailAmisIF {
 
     @Override
     public void demandeAmis(String pseudo, String pseudoDemande) throws RemoteException, IllegalArgumentException {
+        if (pseudo.equals(pseudoDemande)) throw new IllegalArgumentException("Vous ne pouvez pas vous ajouter vous meme en ami.");
         GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudoDemande).ajoutDemandeAmis(GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudo));
         if(mapJoueur.containsKey(pseudoDemande)) {
             try { mapJoueur.get(pseudoDemande).recupererDemande(new JoueurProxy(pseudo, true));} catch (RemoteException re) { /* ne rien faire */ }

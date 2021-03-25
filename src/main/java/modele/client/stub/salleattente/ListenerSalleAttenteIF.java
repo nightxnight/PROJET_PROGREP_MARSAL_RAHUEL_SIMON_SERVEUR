@@ -1,7 +1,7 @@
 package modele.client.stub.salleattente;
 
 import modele.implementation.connexion.joueur.JoueurProxy;
-import modele.implementation.jeux.application.JeuxEnum;
+import modele.serveur.stub.jeux.application.JeuxEnum;
 import modele.serveur.stub.jeux.connecteur.ConnecteurJeuxIF;
 import modele.serveur.stub.salleattente.SalleAttenteProprietaireIF;
 

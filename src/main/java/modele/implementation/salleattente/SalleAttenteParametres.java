@@ -1,6 +1,6 @@
 package modele.implementation.salleattente;
 
-import modele.implementation.jeux.application.JeuxEnum;
+import modele.serveur.stub.jeux.application.JeuxEnum;
 import modele.implementation.jeux.application.Parametres;
 import utils.Paire;
 

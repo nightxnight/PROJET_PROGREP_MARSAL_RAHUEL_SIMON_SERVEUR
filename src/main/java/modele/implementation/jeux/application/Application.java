@@ -8,7 +8,9 @@ import modele.implementation.jeux.application.morpion.MorpionApp;
 import modele.implementation.jeux.application.morpion.MorpionParams;
 import modele.implementation.jeux.application.pendu.PenduApp;
 import modele.implementation.jeux.application.pendu.PenduParams;
+import modele.serveur.stub.jeux.application.JeuxEnum;
 import modele.serveur.stub.jeux.application.JeuxIF;
+import modele.serveur.stub.jeux.application.ResultatPartieEnum;
 
 import java.rmi.RemoteException;
 

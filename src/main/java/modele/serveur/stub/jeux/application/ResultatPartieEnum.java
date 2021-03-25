@@ -1,4 +1,4 @@
-package modele.implementation.jeux.application;
+package modele.serveur.stub.jeux.application;
 
 public enum ResultatPartieEnum {
 

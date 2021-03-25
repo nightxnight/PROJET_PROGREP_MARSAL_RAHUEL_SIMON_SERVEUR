@@ -3,6 +3,7 @@ package modele.implementation.jeux.application;
 import modele.implementation.jeux.application.allumettes.AllumettesParams;
 import modele.implementation.jeux.application.morpion.MorpionParams;
 import modele.implementation.jeux.application.pendu.PenduParams;
+import modele.serveur.stub.jeux.application.JeuxEnum;
 
 import java.util.HashMap;
 
