@@ -205,9 +205,9 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
     private synchronized boolean decompteLancement() throws RemoteException {
         for (int i = 10 ; 0 < i; i--) {
             if(!joueursPret()) {
-                envoyerMessage("ANNULATION LANCEMENT", "Un joueur vient de se retirer."); return false;
+                envoyerMessage("annulation", "un joueur vient de se retirer."); return false;
             } else  {
-                envoyerMessage("serveur", "debut dans " + i + " secondes.");
+                envoyerMessage("serveur", "debut dans " + i + " seconde(s).");
                 try { TimeUnit.SECONDS.sleep(1); } catch (Exception e) { /* Should not occurs */ }
             }
         }

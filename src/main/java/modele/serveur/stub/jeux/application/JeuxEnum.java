@@ -4,18 +4,24 @@ import java.util.ArrayList;
 
 public enum JeuxEnum {
 
-    MORPION("Morpion"),
-    PENDU("Pendu"),
-    ALLUMETTES("Les allumettes");
+    MORPION("Morpion", "Le morpion se joue a deux, vous devrez aligner plusieurs fois le meme symbole pour gagner."),
+    PENDU("Pendu", "Trouvez un mot choisit aleatoirement, mais attention si vous vous trompez trop..."),
+    ALLUMETTES("Les allumettes", "Retirez des allumettes chaque tour pour essayer d'en avoir un nombre impaire a la fin!");
 
     private final String nomJeu;
+    private final String description;
 
-    JeuxEnum(String nomJeu) {
+    JeuxEnum(String nomJeu, String description) {
         this.nomJeu = nomJeu;
+        this.description = description;
     }
 
     public String getNomJeu() {
         return this.nomJeu;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     public static ArrayList<JeuxEnum> getListeJeu() {
