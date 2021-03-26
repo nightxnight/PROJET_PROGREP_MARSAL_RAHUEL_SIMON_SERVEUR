@@ -12,6 +12,7 @@ import utils.Paire;
 import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PenduApp extends Application implements PenduIF {
 
@@ -29,7 +30,9 @@ public class PenduApp extends Application implements PenduIF {
         this.listeJoueurs = new ListeOrdonnee<Paire<String, PenduListenerIF>>();
         this.parametres = parametres;
 
-        this.mot = "AQUARIUM"; //TODO choisir mot random
+        Random random = new Random();
+        int idx = random.nextInt(parametres.getMapMots().get(parametres.getLangueMots()).length);
+        this.mot = parametres.getMapMots().get(parametres.getLangueMots())[idx];
         this.lettres = new ArrayList<Paire<Character, Boolean>>();
         for(Character c : this.mot.toCharArray())
             this.lettres.add(new Paire<Character, Boolean>(c, false));
