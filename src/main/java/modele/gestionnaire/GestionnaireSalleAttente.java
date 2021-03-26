@@ -19,6 +19,10 @@ public class GestionnaireSalleAttente {
 
     private HashMap<String, SalleAttente> mapSalleAttente;
 
+    /*
+     * Permet de ranger les salles d'attentes qui sont crees dans une table de hachage
+     * Elles sont indexees par nom de salle
+     */
     private GestionnaireSalleAttente() {
         this.mapSalleAttente = new HashMap<String, SalleAttente>();
     }

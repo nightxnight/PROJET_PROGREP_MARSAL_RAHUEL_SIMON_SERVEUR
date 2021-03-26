@@ -20,6 +20,10 @@ public class GestionnaireSession {
 
     private HashMap<String, Session> mapSession;
 
+    /*
+     * Permet de gerer les sessions, par consequent cela nous
+     * permet de savoir qui est connecte et qui ne l'est pas.
+     */
     private GestionnaireSession() {
         super();
         this.mapSession = new HashMap<String, Session>();

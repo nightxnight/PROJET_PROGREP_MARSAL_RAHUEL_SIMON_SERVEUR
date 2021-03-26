@@ -16,6 +16,10 @@ public class GestionnaireJoueur {
 
     private HashMap<String, Joueur> mapJoueur;
 
+    /*
+     * permet de charger les joueurs a partir d'un fichier serialise
+     * indexe les joueurs a partir de leur pseudo dans une table de hachage
+     */
     private GestionnaireJoueur() {
         try {
             File fichier = new File("./data/joueurs.ser");

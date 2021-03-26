@@ -24,6 +24,10 @@ public class ConnecteurSalleAttente extends UnicastRemoteObject implements Conne
         return instance;
     }
 
+    /*
+     * Permet aux utilisateurs d'obtenir la liste des salles d'attentes
+     * d'en creer une ou bien d'en rejoindre une.
+     */
     private ConnecteurSalleAttente() throws RemoteException {
         super();
     }
