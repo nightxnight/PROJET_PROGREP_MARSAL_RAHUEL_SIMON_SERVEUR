@@ -7,6 +7,11 @@ import modele.serveur.stub.jeux.application.JeuxEnum;
 
 import java.util.HashMap;
 
+/*
+ * Classe abstraite permettant de realiser un heritage sur
+ * les différents parametres de jeu afin qu'ils implementent tous
+ * les meme methodes
+ */
 public abstract class Parametres {
 
     protected final int JOUEUR_MIN;

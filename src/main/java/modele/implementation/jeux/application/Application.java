@@ -17,6 +17,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.server.Unreferenced;
 
+/*
+ * Classe abstraite permettant de faire implemente aux differents jeux les
+ * methodes necessaire au fonctionnement
+ */
 public abstract class Application extends UnicastRemoteObject implements JeuxIF, Runnable, Unreferenced {
 
     protected boolean reference = true;

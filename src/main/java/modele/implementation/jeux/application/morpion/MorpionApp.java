@@ -33,6 +33,10 @@ public class MorpionApp extends Application implements MorpionIF {
         this.maxTour = parametres.getTailleTableau() * parametres.getTailleTableau();
     }
 
+    /*
+     * Thread qui verifie en continue si tous les joueurs sont connectes,
+     * si un joueur se deconnecte il sera vire automatiquement du jeu
+     */
     @Override
     public void run() {
         while (partieLancer) {

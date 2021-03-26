@@ -4,6 +4,10 @@ import modele.gestionnaire.GestionnaireSession;
 
 import java.io.Serializable;
 
+/*
+ * Classe proxy joueur permettant d'obtenir des informations a partir d'un vrai
+ * joueur tout en limitant l'acces aux methodes et attributs du joueur reel
+ */
 public class JoueurProxy implements Serializable {
 
     private final String pseudo;

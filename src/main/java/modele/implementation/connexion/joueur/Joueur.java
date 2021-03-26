@@ -8,6 +8,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/*
+ * Classe joueur permettant de stocker
+ * toutes les informations relatives
+ * aux joueurs
+ */
 public class Joueur implements Serializable {
 
     private String pseudo;

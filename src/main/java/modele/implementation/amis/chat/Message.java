@@ -2,6 +2,12 @@ package modele.implementation.amis.chat;
 
 import java.io.Serializable;
 
+/*
+ * Classe abstraite message permettant de stocker
+ * l'emmeteur et le destinataire.
+ * Elle est abstraite afin qu'on puisse definir
+ * differents types de messages et ainsi differents types d'informations.
+ */
 public abstract class Message implements Serializable {
 
     private final String de;

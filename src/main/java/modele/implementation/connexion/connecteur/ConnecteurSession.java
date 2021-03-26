@@ -19,6 +19,13 @@ public class ConnecteurSession extends UnicastRemoteObject implements Connecteur
         return instance;
     }
 
+    /*
+     * Permet de controler les connexions au serveur RMI
+     * Ce sera le seul objet qui sera disponible dans l'annuaire
+     * les autres connecteurs seront disponible a partir de la session
+     * Avec ceci, on est sur qu'un joueur doit etre identifie pour pouvoir
+     * interargir avec le serveur
+     */
     private ConnecteurSession() throws RemoteException {
         super();
     }

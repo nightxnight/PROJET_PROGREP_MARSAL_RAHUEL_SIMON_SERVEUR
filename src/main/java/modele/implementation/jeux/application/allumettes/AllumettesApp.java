@@ -58,7 +58,10 @@ public class AllumettesApp extends Application implements AllumettesIF {
         listeJoueurs.premier().getSecond().faireJouer();
     }
 
-
+    /*
+     * Thread qui verifie en continue si tous les joueurs sont connectes,
+     * si un joueur se deconnecte il sera vire automatiquement du jeu
+     */
     @Override
     public void run() {
         while(partieLancer) {

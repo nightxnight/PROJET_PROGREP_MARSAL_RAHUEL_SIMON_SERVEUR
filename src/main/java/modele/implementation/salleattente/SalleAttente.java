@@ -30,6 +30,10 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
     private SalleAttenteParametres parametres;
     private boolean peutRejoindre = true;
 
+    /*
+     * Variables volatile pour s'assurer que chaque thread manipule la derniere
+     * version de cette objet
+     */
     private volatile Application application = null;
     private volatile HashMap<String, Paire<ListenerSalleAttenteIF, Boolean>> mapJoueurs;
 
@@ -43,6 +47,11 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         this.thread.start();
     }
 
+    /*
+     * Thread qui verifie si tous le monde est pret
+     * si c'est le cas il lance la partie au bout de 10 secondes
+     * Il s'occupe aussi de kicker automatiquement les joueurs deconnecte
+     */
     @Override
     public void run() {
         while (reference) {
@@ -75,6 +84,9 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         }
     }
 
+    /*
+     * Methode synchronise pour s'assurer qu'un seul thread execute la fonction
+     */
     private synchronized void autokick() throws RemoteException {
         ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
         for(int i = 0; i < listePseudo.size(); i++) {
@@ -86,6 +98,9 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         }
     }
 
+    /*
+     * Methode appele par le connecteur pour faire rentrer un joueur dans cette salle d'attente
+     */
     public SalleAttente entrer(String pseudoEntrant, ListenerSalleAttenteIF clientListener, String motDePasse) throws RemoteException, IllegalArgumentException {
         if (!this.parametres.getMotDePasse().equals(motDePasse))
             throw new IllegalArgumentException("Les informations transmises n'ont pas permis de vous faire rejoindre cette salle d'attente");
@@ -111,19 +126,19 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         return this;
     }
 
-    public boolean verifierNombreJoueur(int nombre) {
+    public synchronized boolean verifierNombreJoueur(int nombre) {
         return parametres.getJeu().getSecond().getJOUEUR_MIN() <= nombre
                 && nombre <= parametres.getJeu().getSecond().getJOUEUR_MAX();
     }
 
-    public void toutLeMondePasPret() {
+    public synchronized void toutLeMondePasPret() {
         ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
         for(int i = 0; i < listePseudo.size(); i++) {
             mapJoueurs.get(listePseudo.get(i)).setSecond(false);
         }
     }
 
-    public void designerProprietaire(String pseudoProprietaire) throws RemoteException, IllegalArgumentException {
+    public synchronized void designerProprietaire(String pseudoProprietaire) throws RemoteException, IllegalArgumentException {
         this.proprietaire = GestionnaireSession.getInstance().getSessionFromPseudo(pseudoProprietaire);;
         mapJoueurs.get(pseudoProprietaire).getPremier().designerProprietaire((SalleAttenteProprietaireIF) this);
         for(String pseudo : mapJoueurs.keySet())
@@ -220,6 +235,9 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         return true;
     }
 
+    /*
+     * Methode permettant d'envoyer le connecteur de jeu aux clients
+     */
     private void envoyerConnecteur() throws RemoteException {
         this.application = Application.creerApplication(parametres.getJeu().getPremier(), parametres.getJeu().getSecond());
 

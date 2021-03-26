@@ -25,6 +25,11 @@ public class PortailAmis extends UnicastRemoteObject implements PortailAmisIF {
 
     private HashMap<String, AmisListenerIF> mapJoueur;
 
+    /*
+     * Le portail des amis c'est l'interface
+     * qui permet aux clients d'interargir avec
+     * toute la partie amis de l'application
+     */
     private PortailAmis() throws RemoteException {
         super();
         this.mapJoueur = new HashMap<String, AmisListenerIF>();

@@ -2,6 +2,10 @@ package modele.implementation.salleattente;
 
 import java.io.Serializable;
 
+/*
+ * Classe permettant d'obtenir les informations sur une salle
+ * sans pourtant avoir acces a une salle d'attente reel.
+ */
 public class SalleAttenteProxy implements Serializable {
 
     private final String nomSalle;

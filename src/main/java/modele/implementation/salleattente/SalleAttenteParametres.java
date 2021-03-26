@@ -6,6 +6,9 @@ import utils.Paire;
 
 import java.util.HashMap;
 
+/*
+ * Classe permettant de stocker les parametres d'une salle d'attente
+ */
 public class SalleAttenteParametres {
 
     private SalleAttente salleAttente;

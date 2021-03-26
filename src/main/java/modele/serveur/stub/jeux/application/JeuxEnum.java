@@ -2,6 +2,9 @@ package modele.serveur.stub.jeux.application;
 
 import java.util.ArrayList;
 
+/*
+ * Enumeration permettant de stocker les jeux différents sur le serveur
+ */
 public enum JeuxEnum {
 
     MORPION("Morpion", "Le morpion se joue a deux, vous devrez aligner plusieurs fois le meme symbole pour gagner."),
