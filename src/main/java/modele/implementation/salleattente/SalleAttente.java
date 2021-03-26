@@ -12,6 +12,7 @@ import modele.serveur.stub.salleattente.SalleAttenteIF;
 import modele.serveur.stub.salleattente.SalleAttenteProprietaireIF;
 import utils.Paire;
 
+import java.lang.reflect.Array;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.server.Unreferenced;
@@ -29,9 +30,8 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
     private SalleAttenteParametres parametres;
     private boolean peutRejoindre = true;
 
-    private Application application = null;
-
-    private HashMap<String, Paire<ListenerSalleAttenteIF, Boolean>> mapJoueurs;
+    private volatile Application application = null;
+    private volatile HashMap<String, Paire<ListenerSalleAttenteIF, Boolean>> mapJoueurs;
 
     public SalleAttente(String pseudoProprietaire, String nomSalle, String motDePasse, boolean publique) throws RemoteException, IllegalArgumentException {
         super();
@@ -53,32 +53,35 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
                     if (decompteLancement()) {
                         while (true) {
                             if(!application.isReference()) {
-                                this.application = null;
-                                this.changerParametreSalle(this.proprietaire.getJoueur().getPseudo(),
-                                        "jeu",
-                                        this.getParametres().getJeu().getPremier().getNomJeu());
-                                this.designerProprietaire(proprietaire.getJoueur().getPseudo());
-                                peutRejoindre = true;
                                 autokick();
-                                for(String pseudo : mapJoueurs.keySet())
-                                    mapJoueurs.get(pseudo).getPremier().activerPret(verifierNombreJoueur(mapJoueurs.size()));
                                 break;
                             }
                         }
+                        ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
+                        boolean nombreJoueurValide = verifierNombreJoueur(mapJoueurs.size());
+                        for (int i = 0; i < listePseudo.size(); i++) {
+                            mapJoueurs.get(listePseudo.get(i)).getPremier().activerPret(nombreJoueurValide);
+                        }
+                        this.designerProprietaire(proprietaire.getJoueur().getPseudo());
+                        this.changerParametreSalle(this.proprietaire.getJoueur().getPseudo(),
+                                "jeu",
+                                this.getParametres().getJeu().getPremier().getNomJeu());
+                        peutRejoindre = true;
                     } else peutRejoindre = true;
                 }
             } catch (Exception e) {
-                // ne rien faire
+                // Ne rien faire
             }
         }
     }
 
     private synchronized void autokick() throws RemoteException {
-        for(String pseudo : mapJoueurs.keySet()) {
+        ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
+        for(int i = 0; i < listePseudo.size(); i++) {
             try {
-                GestionnaireSession.getInstance().getSessionFromPseudo(pseudo);
+                GestionnaireSession.getInstance().getSessionFromPseudo(listePseudo.get(i));
             } catch (IllegalArgumentException iae) {
-                sortir(pseudo, "est partie. (Perte de connexion)");
+                sortir(listePseudo.get(i), "est partie. (Perte de connexion)");
             }
         }
     }
@@ -114,8 +117,9 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
     }
 
     public void toutLeMondePasPret() {
-        for(String pseudo : mapJoueurs.keySet()) {
-            mapJoueurs.get(pseudo).setSecond(false);
+        ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
+        for(int i = 0; i < listePseudo.size(); i++) {
+            mapJoueurs.get(listePseudo.get(i)).setSecond(false);
         }
     }
 
@@ -196,8 +200,9 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
 
     private synchronized boolean joueursPret() {
         boolean toutLeMondePret = true;
-        for(String pseudo : mapJoueurs.keySet()) {
-            toutLeMondePret = toutLeMondePret && mapJoueurs.get(pseudo).getSecond();
+        ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
+        for(int i = 0; i < listePseudo.size(); i++) {
+            toutLeMondePret = toutLeMondePret && mapJoueurs.get(listePseudo.get(i)).getSecond();
         }
         return (verifierNombreJoueur(mapJoueurs.size())) && toutLeMondePret;
     }
@@ -219,13 +224,15 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
         this.application = Application.creerApplication(parametres.getJeu().getPremier(), parametres.getJeu().getSecond());
 
         ConnecteurJeux connecteurJeux = new ConnecteurJeux(this.application, new ArrayList<String>(mapJoueurs.keySet()));
-        for(String pseudo : mapJoueurs.keySet()) {
-            mapJoueurs.get(pseudo).getPremier().connexionPartie(connecteurJeux, parametres.getJeu().getPremier());
+
+        ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
+        for(int i = 0; i < listePseudo.size(); i++) {
+            mapJoueurs.get(listePseudo.get(i)).getPremier().connexionPartie(connecteurJeux, parametres.getJeu().getPremier());
         }
         toutLeMondePasPret();
-        for (String pseudo : mapJoueurs.keySet()) {
-            mapJoueurs.get(pseudo).getPremier().actualiserJoueur();
-            mapJoueurs.get(pseudo).getPremier().activerPret(false);
+        for (int i = 0; i < listePseudo.size(); i++) {
+            mapJoueurs.get(listePseudo.get(i)).getPremier().actualiserJoueur();
+            mapJoueurs.get(listePseudo.get(i)).getPremier().activerPret(false);
         }
 
 

@@ -93,7 +93,8 @@ public class PenduApp extends Application implements PenduIF {
                     // Should not occur
                 }
         }
-        unreferenced();
+
+        this.reference = false;
     }
 
     private synchronized void autokick() throws RemoteException {

@@ -58,7 +58,7 @@ public class MorpionApp extends Application implements MorpionIF {
                 // should not occur.
             }
         }
-        unreferenced();
+        this.reference = false;
     }
 
     private synchronized void autokick() throws RemoteException {
@@ -168,9 +168,6 @@ public class MorpionApp extends Application implements MorpionIF {
     public void unreferenced() {
         try {
             unexportObject(this, true);
-            this.resultat = null;
-            this.partieLancer = false;
-            this.reference = false;
         } catch (NoSuchObjectException nsoe) {
             // Should never occur.
         }

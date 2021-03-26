@@ -105,7 +105,8 @@ public class AllumettesApp extends Application implements AllumettesIF {
                 try { pairePseudoListener.getSecond().arreterJeu(resultatJoueur, message); } catch (RemoteException re) { System.out.println(re.getMessage()); }
             }
         }
-        unreferenced();
+
+        this.reference = false;
     }
 
     private synchronized void autokick() throws RemoteException {
