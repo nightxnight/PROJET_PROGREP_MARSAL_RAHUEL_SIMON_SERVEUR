@@ -73,7 +73,7 @@ public class PortailAmis extends UnicastRemoteObject implements PortailAmisIF {
     public void accepterDemande(String pseudo, String pseudoAccepte, boolean accepter) throws RemoteException, IllegalArgumentException {
         GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudo).accepterDemandeAmis(GestionnaireJoueur.getInstance().getJoueurFromPseudo(pseudoAccepte), accepter);
         if(!accepter) return;
-        try { mapJoueur.get(pseudo).recupererAmis(new JoueurProxy(pseudoAccepte, true)); } catch (RemoteException re) { /* ne rien faire */ }
+        try { mapJoueur.get(pseudo).recupererAmis(new JoueurProxy(pseudoAccepte, GestionnaireSession.getInstance().isSessionEnLigne(pseudoAccepte))); } catch (RemoteException re) { /* ne rien faire */ }
         if(mapJoueur.containsKey(pseudoAccepte))
             try { mapJoueur.get(pseudoAccepte).recupererAmis(new JoueurProxy(pseudo, true)); } catch (RemoteException re) { /* ne rien faire */ }
         GestionnaireJoueur.getInstance().sauvegarderChangements();

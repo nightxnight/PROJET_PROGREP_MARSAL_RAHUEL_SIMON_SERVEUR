@@ -68,13 +68,10 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
                         }
                         ArrayList<String> listePseudo = new ArrayList<String>(mapJoueurs.keySet());
                         boolean nombreJoueurValide = verifierNombreJoueur(mapJoueurs.size());
-                        for (int i = 0; i < listePseudo.size(); i++) {
-                            mapJoueurs.get(listePseudo.get(i)).getPremier().activerPret(nombreJoueurValide);
+                        for (String s : listePseudo) {
+                            mapJoueurs.get(s).getPremier().activerPret(nombreJoueurValide);
                         }
                         this.designerProprietaire(proprietaire.getJoueur().getPseudo());
-                        this.changerParametreSalle(this.proprietaire.getJoueur().getPseudo(),
-                                "jeu",
-                                this.getParametres().getJeu().getPremier().getNomJeu());
                         peutRejoindre = true;
                     } else peutRejoindre = true;
                 }
@@ -108,6 +105,8 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
             throw new IllegalArgumentException("Cette salle est complete.");
         else if (!peutRejoindre)
             throw new IllegalArgumentException("Cette salle est en pleine partie.");
+        else if(this.mapJoueurs.containsKey(pseudoEntrant))
+            throw new IllegalArgumentException("Vous etes deja dans cette salle d'attente.");
 
         JoueurProxy joueurEntrant = new JoueurProxy(pseudoEntrant, true); // renvoie une erreur qui interruptera la fonction si le joueur n'existe pas
 
@@ -184,6 +183,8 @@ public class SalleAttente extends UnicastRemoteObject implements SalleAttenteIF,
 
     @Override
     public void inviterAmi(String pseudo, String pseudoAmi) throws RemoteException, IllegalArgumentException {
+        if(mapJoueurs.containsKey(pseudoAmi))
+            throw new IllegalArgumentException("Cet ami est deja dans la salle d'attente");
         PortailAmis.getInstance().envoyerInvitationSalle(pseudo, pseudoAmi, this.nomSalle, parametres.getMotDePasse());
         envoyerMessage("serveur", pseudo + " a invite " + pseudoAmi);
     }
